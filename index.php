@@ -25,6 +25,7 @@
         } else {
             echo 'Phew we have it!';
         }
+        echo("hi");
     ?>
 </body>
 </html>
