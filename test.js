@@ -12,12 +12,15 @@ let timer;
 let alphabetDone= false;
 let cycleDone = false;
 let savedInput = [];
+savedInput = JSON.parse(sessionStorage.getItem('array'))
+console.log(savedInput)
 let cycleEnded = [];
 let cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#&?;. ".split("");
 let countDown;
-var f = new File([""], "filename.html", {type: "html", lastModified: 0})
-f.type = "text/plain"
-console.log(URL.createObjectURL(f))
+
+
+
+
 for (r=0;r<9;r++){
     table.innerHTML+="<tr id=\"row" + r + "\"></tr>"
     for (c=0;c<17;c++){
@@ -127,34 +130,3 @@ function over(){
     button.classList.add('touching')
 }
 
-/*
-<td><input type="text" id="0" maxlength="1" readonly="true" /></td>
-          <td><input type="text" id="1" maxlength="1" readonly="true" /></td>
-          <td><input type="text" id="2" maxlength="1" readonly="true" /></td>
-          <td><input type="text" id="3" maxlength="1" readonly="true" /></td>
-          <td><input type="text" id="4" maxlength="1" readonly="true" /></td>
-          <td><input type="text" id="5" maxlength="1" readonly="true" /></td>
-          <td><input type="text" id="6" maxlength="1" readonly="true" /></td>
-          <td><input type="text" id="7" maxlength="1" readonly="true" /></td>
-
-
-
-          <tr id = "row0">
-        </tr>
-        <tr id = "row1">
-        </tr>
-        <tr id = "row2">
-        </tr>
-        <tr id = "row3">
-        </tr>
-        <tr id = "row4">
-        </tr>
-        <tr id = "row5">
-        </tr>
-        <tr id = "row6">
-        </tr>
-        <tr id = "row7">
-        </tr>
-        <tr id = "row8">
-        </tr>
-*/
