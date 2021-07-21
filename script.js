@@ -4,6 +4,7 @@ let array= []
 
 link.onclick=function(){
     array = input.value.split("")
-    sessionStorage.setItem('array', JSON.stringify(array))
+    //sessionStorage.setItem('array', JSON.stringify(array))
+    localStorage.setItem("vOneLocalStorage", array)
     window.location.href = 'open.html'
 }
