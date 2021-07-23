@@ -42,6 +42,7 @@ function detranslate(message){
             console.log(num.length)
         }
         else{
+            num=""
             decodedMessage += String.fromCharCode(message[i].charCodeAt(0)-shift)
         }
     }
