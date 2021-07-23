@@ -30,8 +30,8 @@ function detranslate(message){
     let decodedMessage = ""
     let shift = parseInt(message[0] + message[2])
     for (i=5;i<message.length;i++){
-        if (message[i]=="%"){
-            for (z=i+1;message[z]!="%";z++){
+        if (message[i]=="!"){
+            for (z=i+1;message[z]!="!";z++){
                 num+=message[z];
             }
             for (j=0;j<parseInt(num);j++){
