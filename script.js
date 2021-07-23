@@ -140,7 +140,7 @@ if (playButton!=null && clearButton!=null){
 
 function translate(){
     let shift = Math.trunc(((Math.random()*0)+10))
-    let message = shift.toString()[0] + Math.trunc(Math.random()*10) + shift.toString()[1] + Math.trunc(Math.random()*10)
+    let message = shift.toString()[0] + Math.trunc(Math.random()*10) + shift.toString()[1] + Math.trunc(Math.random()*10) +"-"
     let count= 0
     for (i=0;i<savedInput.length;i++){
         if (savedInput[i]===" "){
