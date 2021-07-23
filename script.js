@@ -148,7 +148,7 @@ function translate(){
         }
         else{
             if (count>0){
-                message+="%"+count+"%"
+                message+="!"+count+"!"
             }
             count=0;
             if (savedInput[i].charCodeAt(0)+shift<=1023  && savedInput[i].charCodeAt(0)+shift!=96 ){
