@@ -1,7 +1,190 @@
-body{
-    background-color: aqua;
+@import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+
+input {
+  background: #0f0f0f;
+  color: white;
+  font-size: 33px;
+  width: 60px;
+  height: 72px;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-family: "Varela Round", sans-serif;
 }
-h1{
-    color: white;
-    text-align: center;
+body {
+  background-color: #070707;
+}
+#container {
+  background-color: #070707;
+  display: flex;
+  padding-left: 320px;
+  padding-top: 40px;
+  padding-bottom: 0px;
+  padding-right: 20px;
+}
+table {
+  background-color: black;
+  padding: 30px;
+  display: inline-table;
+  border-spacing: 5px;
+}
+.options {
+  margin-right: 60px;
+}
+
+.optionees {
+  position: absolute;
+  height: 40px;
+  width: 110px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  border-radius: 60px;
+  font-size: 32px;
+  text-align: center;
+  background-color: white;
+  -webkit-text-fill-color: black;
+  -webkit-text-stroke-width: 0px;
+  -webkit-text-stroke-color: black;
+  font-family: "Varela Round", sans-serif;
+}
+.setPOS {
+  top: var(--topPOS);
+  left: var(--leftPOS);
+}
+.clearPOS {
+  top: 375px;
+  left: 1690px;
+}
+.sendPOS {
+  top: 620px;
+  left: 1690px;
+}
+
+.touching {
+  height: 40px;
+  animation-name: shrink;
+  animation-duration: 70ms;
+  animation-timing-function: linear;
+  animation-direction: normal;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+.squeeze {
+  height: 40px;
+  top: var(--endTopPOS);
+  left: var(--endLeftPOS);
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+.loose{
+  height: 40px;
+    top: var(--topPOS);
+    left: var(--leftPOS);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-width: 0px;
+    -webkit-text-stroke-color: black;
+}
+.go-back {
+  height: 40px;
+  animation-name: expand;
+  animation-duration: 70ms;
+  animation-timing-function: linear;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  -webkit-text-fill-color: black;
+  -webkit-text-stroke-width: 0px;
+  -webkit-text-stroke-color: black;
+}
+
+@keyframes shrink {
+  0% {
+    height: 40px;
+    top: var(--topPOS);
+    left: var(--leftPOS);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-width: 0px;
+    -webkit-text-stroke-color: black;
+  }
+  50%{
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+  }
+  100% {
+    height: 40px;
+    top: var(--endTopPOS);
+    left: var(--endLeftPOS);
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+  }
+}
+@keyframes expand {
+  0% {
+    height: 40px;
+    top: var(--endTopPOS);
+    left: var(--endLeftPOS);
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+  }
+  50%{
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-width: 0px;
+    -webkit-text-stroke-color: black;
+  }
+  100% {
+    height: 40px;
+    top: var(--topPOS);
+    left: var(--leftPOS);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-width: 0px;
+    -webkit-text-stroke-color: black;
+  }
+}
+
+@keyframes appear {
+  0% {
+    margin-left: 1860px;
+    background-color: white;
+  }
+
+  100% {
+    margin-left: 1610px;
+    background-color: white;
+  }
 }
