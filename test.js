@@ -45,6 +45,7 @@ function detranslate(message){
             decodedMessage += String.fromCharCode(message[i].charCodeAt(0)-shift)
         }
     }
+    console.log(decodedMessage.split(""))
     return decodedMessage.split("")
 }
 
