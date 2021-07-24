@@ -118,7 +118,7 @@ if (playButton!=null && clearButton!=null){
                 }
             
                 const el = document.createElement('textarea');
-                el.value = "http://127.0.0.1:5500/open.html?arr=" + translate();
+                el.value = "https://nilayd-lab.github.io/Write-Board/open.html?arr=" + translate();
                 el.setAttribute('readonly', '');
                 el.style.position = 'absolute';
                 el.style.left = '-9999px';
