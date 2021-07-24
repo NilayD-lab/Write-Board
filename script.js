@@ -1,4 +1,5 @@
 
+
 let animationFinished = true;
 let backspacePressed = false;
 let input = document.getElementById('inputz')
@@ -25,7 +26,7 @@ sendButton.classList.add('setPOS')
 for (r=0;r<9;r++){
     table.innerHTML+="<tr id=\"row" + r + "\"></tr>"
     for (c=0;c<17;c++){
-        document.getElementById("row"+r).innerHTML += "<td><input type=\"text\" id="+count+" maxlength=\"1\" /></td>"
+        document.getElementById("row"+r).innerHTML += "<td><input type=\"text\" id="+count+" maxlength=\"0\" /></td>"
         count++;
     }
 }
@@ -117,7 +118,7 @@ if (playButton!=null && clearButton!=null){
                 }
             
                 const el = document.createElement('textarea');
-                el.value = "https://nilayd-lab.github.io/Write-Board/open.html?arr=" + translate();
+                el.value = "http://127.0.0.1:5500/open.html?arr=" + translate();
                 el.setAttribute('readonly', '');
                 el.style.position = 'absolute';
                 el.style.left = '-9999px';
@@ -139,6 +140,7 @@ if (playButton!=null && clearButton!=null){
 }
 
 function translate(){
+    let temp = ""
     let shift = Math.trunc(((Math.random()*0)+10))
     let message = shift.toString()[0] + Math.trunc(Math.random()*10) + shift.toString()[1] + Math.trunc(Math.random()*10) +"-"
     let count= 0
@@ -151,22 +153,72 @@ function translate(){
                 message+="!"+count+"!"
             }
             count=0;
-            if (savedInput[i].charCodeAt(0)+shift<=1023  && savedInput[i].charCodeAt(0)+shift!=96 ){
-                message+=String.fromCharCode(savedInput[i].charCodeAt(0)+shift)
+            temp = String.fromCharCode(savedInput[i].charCodeAt(0)+shift)
+            if (savedInput[i].charCodeAt(0)+shift<=126){
+                message+=cipher(temp)
+                if (cipher(temp)==""){
+                   message+=String.fromCharCode(savedInput[i].charCodeAt(0)+shift) 
+                }
+                console.log(message)
             }
-            else{
-                message+=savedInput[i]
+            else {
+                switch (temp){
+                    case "{":
+                        message+= "\"0"
+                        break
+                    case "}":
+                        message+= "\"1"
+                        break
+                    case "|":
+                        message+= "\"6"
+                        break
+                    case "~":
+                        message+= "\"9"
+                        break
+                }
+                if (message.charAt(message.length-1)!="\""){
+                    message+="\""+savedInput[i]
+                 }
+               
             }
+            
         }
     }
     if (count==savedInput.length){
         message=""
     }
-    console.log(message)
+
     return message
 }
 
-
+function cipher(temp){
+    switch (temp){
+        case "{":
+            return "$0$"
+        case "}":
+            return "$1$"
+        case "[":
+            return "$2$"
+        case "]":
+            return "$3$"
+        case "<":
+            return "$4$"
+        case ">":
+            return "$5$"
+        case "|":
+            return "$6$"
+        case "'\'":
+            return "$7$"
+        case "^":
+            return "$8$"
+        case "~":
+            return "$9$"
+        case "`":
+            return "$10$"
+        default:
+            return ""    
+    }
+}
 
 function onTick(){
     if (cycleDone){
@@ -224,10 +276,15 @@ function setTextfields(i){
         }
         else if (event.key!="Backspace" && event.key.length<2){ 
             backspacePressed = false;
-            textfields[i].value = event.key
+            if (event.key.charCodeAt(0)<=126){
+                textfields[i].value = event.key
+            }
+            else{
+                backspacePressed = true
+            }
+           
         }
         textfields[i].addEventListener('keypress', function(){
-            //console.log(textfields)
             if (backspacePressed && textfields[i].value!==""){
                 savedInput[i] = textfields[i].value
             }
@@ -236,7 +293,6 @@ function setTextfields(i){
             }
             if (i+1!=textfields.length && !backspacePressed){
                 savedInput[i] = textfields[i].value
-                //console.log(textfields[i+1])
                 textfields[i].blur();
                 textfields[i+1].focus()
                  
@@ -260,10 +316,3 @@ function over(){
     button.classList.remove('go-back')
     button.classList.add('touching')
 }
-// link.onclick=function(){
-    
-//     //sessionStorage.setItem('array', JSON.stringify(array))
-//     //localStorage.setItem("vOneLocalStorage", array)
-//     window.document.location = './open.html'+'?arr=' + input.value
-//     //window.location.href = 'open.html'
-// }
