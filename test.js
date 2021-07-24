@@ -15,6 +15,7 @@ let savedInput = [];
 for (i=0;i<153;i++){
     savedInput[i] = " "
 }
+console.log()
 let thing = detranslate(document.location.search.replace(/^.*?\=/, ""));
 for (i=0;i<thing.length;i++){
     savedInput[i] = thing[i]
@@ -36,20 +37,65 @@ function detranslate(message){
             }
             for (j=0;j<parseInt(num);j++){
                 decodedMessage += " "
-                console.log("ddd")
+                
             }
             i+=num.length+1
-            console.log(num.length)
+            num=""
+        }
+        else if (message[i]=="$"){
+            for (z=i+1;message[z]!="$";z++){
+                num+=message[z]
+            }
+            decodedMessage+=String.fromCharCode(decipher(num).charCodeAt(0)-shift)
+            i+=num.length+1
+            num=""
+        }
+        else if (message[i]=="\""){
+            num = decipher(message[i+1])
+            decodedMessage+=num
+            if (num==""){
+                decodedMessage+=message[i+1]
+            }
+            num=""
+            i++
         }
         else{
             num=""
             decodedMessage += String.fromCharCode(message[i].charCodeAt(0)-shift)
         }
     }
-    console.log(decodedMessage.split(""))
+    console.log(decodedMessage)
     return decodedMessage.split("")
 }
-
+function decipher(temp){
+    switch (temp){
+        case "0":
+            return "{"
+        case "1":
+            return "}"
+        case "2":
+            return "["
+        case "3":
+            return "]"
+        case "4":
+            return "<"
+        case "5":
+            return ">"
+        case "6":
+            return "|"
+        case "7":
+            return "'\'"
+        case "8":
+            return "^"
+        case "9":
+            return "~"
+        case "10":
+            return "`"
+        default: 
+            return ""
+            
+    }
+}
 for (r=0;r<9;r++){
     table.innerHTML+="<tr id=\"row" + r + "\"></tr>"
     for (c=0;c<17;c++){
