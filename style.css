@@ -95,7 +95,7 @@ footer {
 .show {
   animation-name: appear;
   animation-duration: 1300ms;
-  animation-timing-function: ease;
+  animation-timing-function: linear;
   background-color: white;
 }
 #link {
