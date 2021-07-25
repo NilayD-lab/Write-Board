@@ -164,7 +164,7 @@ function onTick(){
         }
         if (firstTime){
             label.classList.add('show')
-            countDown = setInterval(showChars, 30)
+            countDown = setInterval(showChars, 45)
         }
         
     }
