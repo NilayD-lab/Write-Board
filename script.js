@@ -112,13 +112,14 @@ if (playButton!=null && clearButton!=null){
                 sendButton.classList.add('go-back');
                 sendButton.classList.add('loose')
                 for (i=0;i<savedInput.length;i++){
+                    savedInput[i] = textfields[i].value
                     if (savedInput[i]===""){
                         savedInput[i] = " "
                     }
                 }
             
                 const el = document.createElement('textarea');
-                el.value = "https://nilayd-lab.github.io/Write-Board/open.html?arr=" + translate();
+                el.value = "http:nilayd-lab.github.io/Write-Board/open.html?arr=" + translate();
                 el.setAttribute('readonly', '');
                 el.style.position = 'absolute';
                 el.style.left = '-9999px';
@@ -141,7 +142,7 @@ if (playButton!=null && clearButton!=null){
 
 function translate(){
     let temp = ""
-    let shift = Math.trunc(((Math.random()*0)+10))
+    let shift = Math.trunc(((Math.random()*4)+10))
     let message = shift.toString()[0] + Math.trunc(Math.random()*10) + shift.toString()[1] + Math.trunc(Math.random()*10) +"-"
     let count= 0
     for (i=0;i<savedInput.length;i++){
@@ -164,20 +165,20 @@ function translate(){
             else {
                 switch (temp){
                     case "{":
-                        message+= "\"0"
+                        message+= "(0"
                         break
                     case "}":
-                        message+= "\"1"
+                        message+= "(1"
                         break
                     case "|":
-                        message+= "\"6"
+                        message+= "(6"
                         break
                     case "~":
-                        message+= "\"9"
+                        message+= "(9"
                         break
                 }
-                if (message.charAt(message.length-1)!="\""){
-                    message+="\""+savedInput[i]
+                if (message.charAt(message.length-1)!="("){
+                    message+="("+savedInput[i]
                  }
                
             }
@@ -316,3 +317,10 @@ function over(){
     button.classList.remove('go-back')
     button.classList.add('touching')
 }
+// link.onclick=function(){
+    
+//     //sessionStorage.setItem('array', JSON.stringify(array))
+//     //localStorage.setItem("vOneLocalStorage", array)
+//     window.document.location = './open.html'+'?arr=' + input.value
+//     //window.location.href = 'open.html'
+// }
