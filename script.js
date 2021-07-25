@@ -120,6 +120,7 @@ if (playButton!=null && clearButton!=null){
             
                 const el = document.createElement('textarea');
                 el.value = "http://nilayd-lab.github.io/Write-Board/open.html?arr=" + translate();
+                console.log("thing")
                 el.setAttribute('readonly', '');
                 el.style.position = 'absolute';
                 el.style.left = '-9999px';
