@@ -15,7 +15,7 @@ let savedInput = [];
 for (i=0;i<153;i++){
     savedInput[i] = " "
 }
-console.log()
+
 let thing = detranslate(document.location.search.replace(/^.*?\=/, ""));
 for (i=0;i<thing.length;i++){
     savedInput[i] = thing[i]
@@ -50,8 +50,9 @@ function detranslate(message){
             i+=num.length+1
             num=""
         }
-        else if (message[i]=="\""){
+        else if (message[i]=='('){
             num = decipher(message[i+1])
+            console.log(true)
             decodedMessage+=num
             if (num==""){
                 decodedMessage+=message[i+1]
