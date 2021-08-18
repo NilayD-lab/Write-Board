@@ -269,31 +269,51 @@ function onTick(){
 //maxlength=\"1\"
 function setTextfields(i){
     textfields[i].addEventListener('keydown', function(event){
-        if(textfields[i].value==="" && event.key!="Backspace"){
+        if(textfields[i].value==="" && event.key!="Backspace" && event.key!="Enter" && event.key!="ArrowLeft"){
             textfields[i].value = ""
         }
         if (textfields[i].value==="" && event.key=="Backspace" && i!=0){
-            backspacePressed = true;
+            specialKeyPressed = true;
             textfields[i-1].focus()
         }
-        else if (event.key!="Backspace" && event.key.length<2){ 
-            backspacePressed = false;
+        else if (event.key=="Enter" && i<136){
+            specialKeyPressed = true
+            textfields[i+17].focus()
+        }
+        else if (event.key=="ArrowLeft" && i!=0){
+            specialKeyPressed = true
+            textfields[i-1].focus()
+        }
+        else if (event.key=="ArrowRight" && i!=152){
+            specialKeyPressed = true
+            textfields[i+1].focus()
+        }
+        else if (event.key=="ArrowUp" && i>16){
+            specialKeyPressed = true
+            textfields[i-17].focus()
+        }
+        else if (event.key=="ArrowDown" && i<136){
+            specialKeyPressed = true
+            textfields[i+17].focus()
+        }
+        else if (event.key.length<2){ 
+            specialKeyPressed = false;
             if (event.key.charCodeAt(0)<=126){
                 textfields[i].value = event.key
             }
             else{
-                backspacePressed = true
+                specialKeyPressed = true
             }
            
         }
         textfields[i].addEventListener('keypress', function(){
-            if (backspacePressed && textfields[i].value!==""){
+            if (specialKeyPressed && textfields[i].value!==""){
                 savedInput[i] = textfields[i].value
             }
-            if (textfields[i].value ==="" && !backspacePressed){
+            if (textfields[i].value ==="" && !specialKeyPressed){
                 savedInput[i] = textfields[i].value
             }
-            if (i+1!=textfields.length && !backspacePressed){
+            if (i+1!=textfields.length && !specialKeyPressed){
                 savedInput[i] = textfields[i].value
                 textfields[i].blur();
                 textfields[i+1].focus()
@@ -303,9 +323,7 @@ function setTextfields(i){
             
             
         })
-        textfields[i].addEventListener('keyup', function(){
-            
-        })
+        
         
     })
 }
