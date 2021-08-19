@@ -28,18 +28,50 @@ for (r=0;r<153;r++){
 for (i=0;i<153;i++){
     textfields.push(document.getElementById(""+i));
     setTextfields(i)
-    textfields[i].style.fontSize = "" + Math.floor((window.innerWidth*(38/1920)))+"px"
+    textfields[i].style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
 }
-playButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
-clearButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
-sendButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
+playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+clearButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+sendButton.style.fontSize =Math.floor((window.innerWidth*(32/1920)))+"px"
+if (window.innerWidth<=600){
+    playButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
+    clearButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
+    sendButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
+    playButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
+    playButton.style.setProperty('--leftPOS', 300/19.2 + "vw")
+    clearButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
+    clearButton.style.setProperty('--leftPOS', 900/19.2 + "vw")
+    sendButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
+    sendButton.style.setProperty('--leftPOS', 1500/19.2 + "vw")
+}
 
 window.addEventListener('resize', function(){
-    playButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
-    clearButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
-    sendButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
+    if (this.window.innerWidth>600){
+        playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+        clearButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+        sendButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+        playButton.style.setProperty('--topPOS', "6.77vw")
+        playButton.style.setProperty('--leftPOS', "88.02083vw")
+        clearButton.style.setProperty('--topPOS', "19.53125vw")
+        clearButton.style.setProperty('--leftPOS', "88.02083vw")
+        sendButton.style.setProperty('--topPOS', "32.2916vw")
+        sendButton.style.setProperty('--leftPOS', "88.02083vw")
+    }
+    else{
+        
+        playButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
+        clearButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
+        sendButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
+        playButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
+        playButton.style.setProperty('--leftPOS', 300/19.2 + "vw")
+        clearButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
+        clearButton.style.setProperty('--leftPOS', 900/19.2 + "vw")
+        sendButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
+        sendButton.style.setProperty('--leftPOS', 1500/19.2 + "vw")
+        
+    }
     for (i=0;i<textfields.length;i++){
-        textfields[i].style.fontSize = "" + Math.floor((window.innerWidth*(38/1920)))+"px"
+        textfields[i].style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
     }
 })
 
@@ -47,107 +79,153 @@ window.addEventListener('resize', function(){
 
 if (playButton!=null && clearButton!=null){ 
     playButton.addEventListener('mousedown', function(){
-        playButton.classList.remove('loose')
-        playButton.classList.remove('go-back');
-        playButton.classList.add('touching');
-        playButton.addEventListener('animationend', function(){
-            playButton.classList.remove('setPOS')
-            playButton.classList.add('squeeze')
-        })
+        if (window.innerWidth>600){
+            playButton.classList.remove('loose')
+            playButton.classList.remove('go-back');
+            playButton.classList.add('touching');
+            playButton.addEventListener('animationend', function(){
+                playButton.classList.remove('setPOS')
+                playButton.classList.add('squeeze')
+            })
+        }
+        else{
+            playButton.style.backgroundColor = '#AEAEAE';
+        }
     })
     clearButton.addEventListener('mousedown', function(){
-        clearButton.classList.remove('loose')
-        clearButton.classList.remove('go-back');
-        clearButton.classList.add('touching');
-        clearButton.addEventListener('animationend', function(){
-            clearButton.classList.remove('setPOS')
-            clearButton.classList.add('squeeze')
-        })
+        if (window.innerWidth>600){
+            clearButton.classList.remove('loose')
+            clearButton.classList.remove('go-back');
+            clearButton.classList.add('touching');
+            clearButton.addEventListener('animationend', function(){
+                clearButton.classList.remove('setPOS')
+                clearButton.classList.add('squeeze')
+            })
+        }
+        else{
+            clearButton.style.backgroundColor = '#AEAEAE';
+        }
     })
     sendButton.addEventListener('mousedown', function(){
-        sendButton.classList.remove('loose')
-        sendButton.classList.remove('go-back');
-        sendButton.classList.add('touching');
-        sendButton.addEventListener('animationend', function(){
-            sendButton.classList.remove('setPOS')
-            sendButton.classList.add('squeeze')
-        })
+        if (window.innerWidth>600){
+            sendButton.classList.remove('loose')
+            sendButton.classList.remove('go-back');
+            sendButton.classList.add('touching');
+            sendButton.addEventListener('animationend', function(){
+                sendButton.classList.remove('setPOS')
+                sendButton.classList.add('squeeze')
+            })
+        }
+        else{
+            sendButton.style.backgroundColor = '#AEAEAE';
+        }
     })
     window.addEventListener('mouseup', function(){
-        for (i=0;i<playButton.classList.length;i++){
-            if (playButton.classList[i]==='touching'){
-                playButton.classList.remove('touching');
-                playButton.classList.remove('squeeze')
-                playButton.classList.add('go-back');
-                playButton.classList.add('loose')
-                if (animationFinished){
-                    animationFinished = false;
-                    for (i=0;i<textfields.length;i++){
-                        savedInput[i] = textfields[i].value
-                    }
-                    cycleEnded = [];
-                    alphabetDone = false;
-                    cycleDone = false;
-                    count=0;
-                    timer = setInterval(onTick, 50); 
+        if (this.window.innerWidth>600){
+            for (i=0;i<playButton.classList.length;i++){
+                if (playButton.classList[i]==='touching'){
+                    playButton.classList.remove('touching');
+                    playButton.classList.remove('squeeze')
+                    playButton.classList.add('go-back');
+                    playButton.classList.add('loose')
+                    play()
+                    
                 }
-                
             }
-        }
-        for (i=0;i<clearButton.classList.length;i++){
-            if (clearButton.classList[i]==='touching'){
-                clearButton.classList.remove('touching');
-                clearButton.classList.remove('squeeze')
-                clearButton.classList.add('go-back');
-                clearButton.classList.add('loose')
-                if (animationFinished){
-                    cycleEnded = [];
-                    alphabetDone = false;
-                    cycleDone = false;
-                    count=0;
-                    savedInput = [];
-                    for (i=0;i<textfields.length;i++){
-                        textfields[i].value = ""
-                    } 
+            for (i=0;i<clearButton.classList.length;i++){
+                if (clearButton.classList[i]==='touching'){
+                    clearButton.classList.remove('touching');
+                    clearButton.classList.remove('squeeze')
+                    clearButton.classList.add('go-back');
+                    clearButton.classList.add('loose')
+                    clear()
+                    
                 }
-                
             }
-        }
-        for (i=0;i<sendButton.classList.length;i++){
-            if (sendButton.classList[i]==='touching'){
-                sendButton.classList.remove('touching');
-                sendButton.classList.remove('squeeze')
-                sendButton.classList.add('go-back');
-                sendButton.classList.add('loose')
-                for (i=0;i<savedInput.length;i++){
-                    savedInput[i] = textfields[i].value
-                    if (savedInput[i]===""){
-                        savedInput[i] = " "
-                    }
+            for (i=0;i<sendButton.classList.length;i++){
+                if (sendButton.classList[i]==='touching'){
+                    sendButton.classList.remove('touching');
+                    sendButton.classList.remove('squeeze')
+                    sendButton.classList.add('go-back');
+                    sendButton.classList.add('loose')
+                    send()
+                
                 }
-            
-                const el = document.createElement('textarea');
-                el.value = "http://nilayd-lab.github.io/Write-Board/open.html?arr=" + translate();
-                el.setAttribute('readonly', '');
-                el.style.position = 'absolute';
-                el.style.left = '-9999px';
-                document.body.appendChild(el);
-                el.select();
-                document.execCommand('copy');
-                document.body.removeChild(el)
-                sendButton.textContent = "COPIED"
-                sendButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
-                let newTimer = this.setInterval(function(){
-                    sendButton.textContent = "SEND"
-                    clearInterval(newTimer)
-                    newTimer = null
-                }, 500)
-               
             }
         }
     }) 
+    playButton.addEventListener('mouseup', ()=>{
+        if (window.innerWidth<=600){
+            playButton.style.backgroundColor = '#FFFFFF'
+            play()
+        }
+    })
+    clearButton.addEventListener('mouseup', ()=>{
+        if (window.innerWidth<=600){
+            clearButton.style.backgroundColor = '#FFFFFF'
+            clear()
+        }
+    })
+    sendButton.addEventListener('mouseup', ()=>{
+        if (window.innerWidth<=600){
+            sendButton.style.backgroundColor = '#FFFFFF'
+            send()
+        }
+    })
 }
 
+function play(){
+    if (animationFinished){
+        animationFinished = false;
+        for (i=0;i<textfields.length;i++){
+            savedInput[i] = textfields[i].value
+        }
+        cycleEnded = [];
+        alphabetDone = false;
+        cycleDone = false;
+        count=0;
+        timer = setInterval(onTick, 50); 
+    }
+}
+
+function clear(){
+    if (animationFinished){
+        cycleEnded = [];
+        alphabetDone = false;
+        cycleDone = false;
+        count=0;
+        savedInput = [];
+        for (i=0;i<textfields.length;i++){
+            textfields[i].value = ""
+        } 
+    }
+}
+
+function send(){
+    for (i=0;i<savedInput.length;i++){
+        savedInput[i] = textfields[i].value
+        if (savedInput[i]===""){
+            savedInput[i] = " "
+        }
+    }
+
+    const el = document.createElement('textarea');
+    el.value = "http://nilayd-lab.github.io/Write-Board/open.html?arr=" + translate();
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el)
+    sendButton.textContent = "COPIED"
+    sendButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+    let newTimer = this.setInterval(function(){
+        sendButton.textContent = "SEND"
+        clearInterval(newTimer)
+        newTimer = null
+    }, 500)
+}
 function translate(){
     let temp = ""
     let shift = Math.trunc(((Math.random()*4)+10))
