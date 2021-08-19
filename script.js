@@ -1,5 +1,3 @@
-
-
 let animationFinished = true;
 let backspacePressed = false;
 let input = document.getElementById('inputz')
@@ -9,7 +7,7 @@ let savedInput= []
 for (i = 0;i<153;i++){
     savedInput[i] = ""
 }
-let table = document.getElementById("table")
+let grid = document.getElementById("grid")
 let textfields = [];
 let alphabets = "ABCDEFGHIJKLMNOQRSTUVWXYZ".split("");
 let playButton = document.getElementById("play");
@@ -20,22 +18,32 @@ let cycleDone = false;
 let cycleEnded = [];
 let cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#&?;. ".split("");
 let countDown;
+let atStartOfInput = false;
 playButton.classList.add('setPOS')
 clearButton.classList.add('setPOS')
 sendButton.classList.add('setPOS')
-for (r=0;r<9;r++){
-    table.innerHTML+="<tr id=\"row" + r + "\"></tr>"
-    for (c=0;c<17;c++){
-        document.getElementById("row"+r).innerHTML += "<td><input type=\"text\" id="+count+" maxlength=\"0\" /></td>"
-        count++;
-    }
+for (r=0;r<153;r++){
+    grid.innerHTML+="<input type=\"text\" id="+r+" maxlength=\"0\" />"
 }
-for (i=0;i<count;i++){
+for (i=0;i<153;i++){
     textfields.push(document.getElementById(""+i));
     setTextfields(i)
+    textfields[i].style.fontSize = "" + Math.floor((window.innerWidth*(38/1920)))+"px"
 }
+playButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
+clearButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
+sendButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
 
-count=0;
+window.addEventListener('resize', function(){
+    playButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
+    clearButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
+    sendButton.style.fontSize = "" + Math.floor((window.innerWidth*(32/1920)))+"px"
+    for (i=0;i<textfields.length;i++){
+        textfields[i].style.fontSize = "" + Math.floor((window.innerWidth*(38/1920)))+"px"
+    }
+})
+
+
 
 if (playButton!=null && clearButton!=null){ 
     playButton.addEventListener('mousedown', function(){
@@ -120,7 +128,6 @@ if (playButton!=null && clearButton!=null){
             
                 const el = document.createElement('textarea');
                 el.value = "http://nilayd-lab.github.io/Write-Board/open.html?arr=" + translate();
-                console.log("thing")
                 el.setAttribute('readonly', '');
                 el.style.position = 'absolute';
                 el.style.left = '-9999px';
@@ -129,7 +136,7 @@ if (playButton!=null && clearButton!=null){
                 document.execCommand('copy');
                 document.body.removeChild(el)
                 sendButton.textContent = "COPIED"
-                sendButton.style.fontSize = "30px";
+                sendButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
                 let newTimer = this.setInterval(function(){
                     sendButton.textContent = "SEND"
                     clearInterval(newTimer)
@@ -161,7 +168,6 @@ function translate(){
                 if (cipher(temp)==""){
                    message+=String.fromCharCode(savedInput[i].charCodeAt(0)+shift) 
                 }
-                console.log(message)
             }
             else {
                 switch (temp){
@@ -272,7 +278,13 @@ function setTextfields(i){
         if(textfields[i].value==="" && event.key!="Backspace" && event.key!="Enter" && event.key!="ArrowLeft"){
             textfields[i].value = ""
         }
-        if (textfields[i].value==="" && event.key=="Backspace" && i!=0){
+        if (textfields[i].value!="" && event.key=="Backspace"){
+            if (textfields[i].value.length!=textfields[i].selectionEnd && i!=0){
+                textfields[i-1].focus()
+            }
+            specialKeyPressed = true;
+        }
+        else if (textfields[i].value=="" && event.key=="Backspace" && i!=0){
             specialKeyPressed = true;
             textfields[i-1].focus()
         }
@@ -283,18 +295,23 @@ function setTextfields(i){
         else if (event.key=="ArrowLeft" && i!=0){
             specialKeyPressed = true
             textfields[i-1].focus()
+            event.preventDefault()
+        
         }
         else if (event.key=="ArrowRight" && i!=152){
             specialKeyPressed = true
             textfields[i+1].focus()
+            event.preventDefault()
         }
         else if (event.key=="ArrowUp" && i>16){
             specialKeyPressed = true
             textfields[i-17].focus()
+            event.preventDefault()
         }
         else if (event.key=="ArrowDown" && i<136){
             specialKeyPressed = true
             textfields[i+17].focus()
+            event.preventDefault()
         }
         else if (event.key.length<2){ 
             specialKeyPressed = false;
@@ -306,9 +323,12 @@ function setTextfields(i){
             }
            
         }
+        
+        
         textfields[i].addEventListener('keypress', function(){
             if (specialKeyPressed && textfields[i].value!==""){
                 savedInput[i] = textfields[i].value
+                
             }
             if (textfields[i].value ==="" && !specialKeyPressed){
                 savedInput[i] = textfields[i].value
@@ -323,6 +343,7 @@ function setTextfields(i){
             
             
         })
+
         
         
     })
@@ -336,10 +357,3 @@ function over(){
     button.classList.remove('go-back')
     button.classList.add('touching')
 }
-// link.onclick=function(){
-    
-//     //sessionStorage.setItem('array', JSON.stringify(array))
-//     //localStorage.setItem("vOneLocalStorage", array)
-//     window.document.location = './open.html'+'?arr=' + input.value
-//     //window.location.href = 'open.html'
-// }
