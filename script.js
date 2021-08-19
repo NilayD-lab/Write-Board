@@ -28,6 +28,7 @@ for (r=0;r<153;r++){
 for (i=0;i<153;i++){
     textfields.push(document.getElementById(""+i));
     setTextfields(i)
+    textfields[i].value = 'f'
     textfields[i].style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
 }
 playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
