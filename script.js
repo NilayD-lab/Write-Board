@@ -18,7 +18,7 @@ let cycleDone = false;
 let cycleEnded = [];
 let cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#&?;. ".split("");
 let countDown;
-let smallScreen = window.innerWidth<=1000
+let smallScreen = window.innerWidth<=1300
 let atStartOfInput = false;
 playButton.classList.add('setPOS')
 clearButton.classList.add('setPOS')
@@ -36,19 +36,20 @@ playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
 clearButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
 sendButton.style.fontSize =Math.floor((window.innerWidth*(32/1920)))+"px"
 if (smallScreen){
-    playButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
-    clearButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
-    sendButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
-    playButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
+    playButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
+    clearButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
+    sendButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
+    playButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
     playButton.style.setProperty('--leftPOS', 300/19.2 + "vw")
-    clearButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
-    clearButton.style.setProperty('--leftPOS', 900/19.2 + "vw")
-    sendButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
-    sendButton.style.setProperty('--leftPOS', 1500/19.2 + "vw")
+    clearButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
+    clearButton.style.setProperty('--leftPOS', 830/19.2 + "vw")
+    sendButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
+    sendButton.style.setProperty('--leftPOS', 1330/19.2 + "vw")
 }
 
 window.addEventListener('resize', function(){
-    smallScreen = window.innerWidth<=1000
+    smallScreen = window.innerWidth<=1300
+    console.log(this.window.innerWidth)
     if (!smallScreen){
         playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
         clearButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
@@ -62,15 +63,15 @@ window.addEventListener('resize', function(){
     }
     else{
         
-        playButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
-        clearButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
-        sendButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
-        playButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
+        playButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
+        clearButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
+        sendButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
+        playButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
         playButton.style.setProperty('--leftPOS', 300/19.2 + "vw")
-        clearButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
-        clearButton.style.setProperty('--leftPOS', 900/19.2 + "vw")
-        sendButton.style.setProperty('--topPOS', 1000/19.2 + "vw")
-        sendButton.style.setProperty('--leftPOS', 1500/19.2 + "vw")
+        clearButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
+        clearButton.style.setProperty('--leftPOS', 830/19.2 + "vw")
+        sendButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
+        sendButton.style.setProperty('--leftPOS', 1330/19.2 + "vw")
         
     }
     for (i=0;i<textfields.length;i++){
@@ -222,7 +223,7 @@ function send(){
     document.execCommand('copy');
     document.body.removeChild(el)
     sendButton.textContent = "COPIED"
-    sendButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+    sendButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
     let newTimer = this.setInterval(function(){
         sendButton.textContent = "SEND"
         clearInterval(newTimer)
