@@ -202,14 +202,14 @@ body {
     background-color: white;
   }
 }
-@media only screen and (max-width: 1000px){
-  
-  #container{
-    display: block;
-    justify-content:stretch;
+@media only screen and (max-width: 1300px) {
+  .optionees{
+    height: 4.4vw;
+    width: 11.8vw;
+    padding-left: 1.6vw;
+    padding-right: 1.6vw;
+    padding-top: 5.36vw;
+    padding-bottom: 5.36vw;
+    border-radius: 6.36vw;
   }
-  #grid{
-    width: auto;
-  }
-  
 }
