@@ -18,6 +18,7 @@ let cycleDone = false;
 let cycleEnded = [];
 let cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#&?;. ".split("");
 let countDown;
+let smallScreen = window.innerWidth<=1000
 let atStartOfInput = false;
 playButton.classList.add('setPOS')
 clearButton.classList.add('setPOS')
@@ -34,7 +35,7 @@ for (i=0;i<153;i++){
 playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
 clearButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
 sendButton.style.fontSize =Math.floor((window.innerWidth*(32/1920)))+"px"
-if (window.innerWidth<=600){
+if (smallScreen){
     playButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
     clearButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
     sendButton.style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
@@ -47,7 +48,8 @@ if (window.innerWidth<=600){
 }
 
 window.addEventListener('resize', function(){
-    if (this.window.innerWidth>600){
+    smallScreen = window.innerWidth<=1000
+    if (!smallScreen){
         playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
         clearButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
         sendButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
@@ -80,7 +82,7 @@ window.addEventListener('resize', function(){
 
 if (playButton!=null && clearButton!=null){ 
     playButton.addEventListener('mousedown', function(){
-        if (window.innerWidth>600){
+        if (!smallScreen){
             playButton.classList.remove('loose')
             playButton.classList.remove('go-back');
             playButton.classList.add('touching');
@@ -94,7 +96,7 @@ if (playButton!=null && clearButton!=null){
         }
     })
     clearButton.addEventListener('mousedown', function(){
-        if (window.innerWidth>600){
+        if (!smallScreen){
             clearButton.classList.remove('loose')
             clearButton.classList.remove('go-back');
             clearButton.classList.add('touching');
@@ -108,7 +110,7 @@ if (playButton!=null && clearButton!=null){
         }
     })
     sendButton.addEventListener('mousedown', function(){
-        if (window.innerWidth>600){
+        if (!smallScreen){
             sendButton.classList.remove('loose')
             sendButton.classList.remove('go-back');
             sendButton.classList.add('touching');
@@ -122,7 +124,7 @@ if (playButton!=null && clearButton!=null){
         }
     })
     window.addEventListener('mouseup', function(){
-        if (this.window.innerWidth>600){
+        if (!smallScreen){
             for (i=0;i<playButton.classList.length;i++){
                 if (playButton.classList[i]==='touching'){
                     playButton.classList.remove('touching');
@@ -156,19 +158,19 @@ if (playButton!=null && clearButton!=null){
         }
     }) 
     playButton.addEventListener('mouseup', ()=>{
-        if (window.innerWidth<=600){
+        if (smallScreen){
             playButton.style.backgroundColor = '#FFFFFF'
             play()
         }
     })
     clearButton.addEventListener('mouseup', ()=>{
-        if (window.innerWidth<=600){
+        if (smallScreen){
             clearButton.style.backgroundColor = '#FFFFFF'
             clear()
         }
     })
     sendButton.addEventListener('mouseup', ()=>{
-        if (window.innerWidth<=600){
+        if (smallScreen){
             sendButton.style.backgroundColor = '#FFFFFF'
             send()
         }
