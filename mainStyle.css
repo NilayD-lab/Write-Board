@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
 
+:root{
+  --small: 0px;
+}
+
 input {
   display: inline;
   background: #0f0f0f;
@@ -198,7 +202,8 @@ body {
     background-color: white;
   }
 }
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 1000px){
+  
   #container{
     display: block;
     justify-content:stretch;
@@ -206,4 +211,5 @@ body {
   #grid{
     width: auto;
   }
+  
 }
