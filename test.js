@@ -36,6 +36,7 @@ let thing = detranslate(document.location.search.replace(/^.*?\=/, ""));
 for (i=0;i<thing.length;i++){
     savedInput[i] = thing[i]
 }
+
 let cycleEnded = [];
 let cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#&?;. ".split("");
 let countDown;
@@ -47,6 +48,7 @@ for (i=0;i<153;i++){
     textfields.push(document.getElementById(""+i));
     textfields[i].style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
 }
+
 playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
 if (smallScreen){
     playButton.style.fontSize = Math.floor((window.innerWidth*(128/1920)))+"px"
@@ -97,6 +99,8 @@ leftArr.addEventListener('click', ()=>{
     adOnScreen = true
     popup.addEventListener('animationend', ()=>{
         document.body.appendChild(popup)
+        document.body.classList.add('lock-screen')
+        
         
     }) 
 })
@@ -108,9 +112,11 @@ rightArr.addEventListener('click', ()=>{
     leftArr.remove()
     rightArr.remove()
     adOnScreen = true
+    
 
     popup.addEventListener('animationend', ()=>{
         document.body.appendChild(popup)
+        document.body.classList.add('lock-screen')
     }) 
     
 })
@@ -247,6 +253,7 @@ function hideAD(){
     popup.style.setProperty('--start-XPOS', "17.7vw")
     popup.style.setProperty('--start-YPOS', "18vh")
     removeFadeEffect()
+    document.body.classList.remove('lock-screen')
     popup.removeEventListener('animationend', hideAD)
     popup.remove()
 
@@ -364,10 +371,6 @@ function showChars(){
 function play(){
     if (animationFinished){
         animationFinished = false;
-        for (i=0;i<textfields.length;i++){
-            savedInput[i] = textfields[i].value
-            textfields[i].readOnly = true
-        }
         cycleEnded = [];
         alphabetDone = false;
         cycleDone = false;
@@ -389,12 +392,11 @@ function onTick(){
         clearInterval(timer);
         timer = null;
         count=0;
-       
+        animationFinished  = true
         if (firstTime){
             if (!smallScreen){
                 document.body.appendChild(label)
                 label.classList.add('show')
-                //countDown = setInterval(showChars, 45) 
                 }
             else{
                 adOnScreen = true;
@@ -403,6 +405,7 @@ function onTick(){
                 addFadeEffect()
                 popup.addEventListener('animationend', ()=>{
                     popup.classList.remove('show-pop-up')
+                    document.body.classList.add('lock-screen')
                 }) 
             }
             firstTime = false;
@@ -414,9 +417,11 @@ function onTick(){
         
     }
     else if (alphabetDone){
+    
         for (i=0;i<textfields.length;i++){
             if (!cycleEnded.includes(textfields[i])){
                 textfields[i].value = cycle[count];
+                
             }
             if (textfields[i].value == savedInput[i]){
                 cycleEnded.push(textfields[i]);
