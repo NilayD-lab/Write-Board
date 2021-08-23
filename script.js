@@ -24,12 +24,11 @@ playButton.classList.add('setPOS')
 clearButton.classList.add('setPOS')
 sendButton.classList.add('setPOS')
 for (r=0;r<153;r++){
-    grid.innerHTML+="<input type=\"text\" id="+r+" maxlength=\"0\" />"
+    grid.innerHTML+="<input type=\"text\" id="+r+" maxlength=\"1\" />"
 }
 for (i=0;i<153;i++){
     textfields.push(document.getElementById(""+i));
     setTextfields(i)
-//     textfields[i].value = 'f'
     textfields[i].style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
 }
 playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
@@ -49,7 +48,6 @@ if (smallScreen){
 
 window.addEventListener('resize', function(){
     smallScreen = window.innerWidth<=1300
-    console.log(this.window.innerWidth)
     if (!smallScreen){
         playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
         clearButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
@@ -183,6 +181,7 @@ function play(){
         animationFinished = false;
         for (i=0;i<textfields.length;i++){
             savedInput[i] = textfields[i].value
+            textfields[i].readOnly = true
         }
         cycleEnded = [];
         alphabetDone = false;
@@ -223,7 +222,12 @@ function send(){
     document.execCommand('copy');
     document.body.removeChild(el)
     sendButton.textContent = "COPIED"
-    sendButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
+    if (smallScreen){
+        sendButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
+    }
+    else{
+        sendButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+    }
     let newTimer = this.setInterval(function(){
         sendButton.textContent = "SEND"
         clearInterval(newTimer)
@@ -320,6 +324,9 @@ function onTick(){
                 textfields[i].value = savedInput[i];
             }
         }
+        for (i=0;i<textfields.length;i++){
+            textfields[i].readOnly = false
+        }
         clearInterval(timer);
         timer = null;
         count=0;
@@ -356,6 +363,9 @@ function onTick(){
 }
 //maxlength=\"1\"
 function setTextfields(i){
+    if (textfields[i].readOnly==true){
+        return
+    }
     textfields[i].addEventListener('keydown', function(event){
         if(textfields[i].value==="" && event.key!="Backspace" && event.key!="Enter" && event.key!="ArrowLeft"){
             textfields[i].value = ""
