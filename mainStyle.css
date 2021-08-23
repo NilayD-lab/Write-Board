@@ -26,11 +26,6 @@ body {
   display: flex;
   justify-content: space-evenly;
   padding-top: 1.7vw;
-  /* padding-left: 19vw;
-  padding-top: 2.4vh;
-  padding-bottom: 0px;
-  padding-right: 1.2vw; */
-
 }
 
 #grid {
@@ -70,6 +65,7 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  cursor: pointer;
 }
 .setPOS {
   top: var(--topPOS);
