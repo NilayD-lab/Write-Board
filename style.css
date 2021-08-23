@@ -11,6 +11,12 @@
 :root::-webkit-scrollbar{
   display: none;
 }
+.lock-screen {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  position: fixed;
+}
 input {
   display: inline;
   background: #0f0f0f;
