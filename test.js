@@ -1,29 +1,284 @@
-
+let adOnScreen = false;
+let firstTime = true;
+let leftArr = document.getElementById('leftarr')
+let rightArr = document.getElementById('rightarr')
+leftArr.remove()
+rightArr.remove()
+let popup = document.getElementById('pop-up')
+popup.remove()
+let touchstartX = 0;
+let touchstartY = 0;
+let touchendX = 0;
+let touchendY = 0;
+let animationFinished = true;
 let label = document.getElementById("ad")
 let link = document.getElementById("link")
 let linkText = link.textContent.split("")
-link.textContent = ""
-let table = document.getElementById("table")
+label.remove()
+let popupLink = document.getElementById('pop-up-link')
+let grid = document.getElementById("grid")
 let textfields = [];
 let alphabets = "ABCDEFGHIJKLMNOQRSTUVWXYZ".split("");
-let button = document.querySelector(".play");
+let playButton = document.querySelector(".play");
+playButton.classList.add('setPOS')
 let count = 0;
 let timer;
 let alphabetDone= false;
 let cycleDone = false;
 let savedInput = [];
+let smallScreen = window.innerWidth<=1300
+let initTop = getComputedStyle(popup).getPropertyValue('top').substring(0, getComputedStyle(popup).getPropertyValue('top').length-2)
+let initLeft = getComputedStyle(popup).getPropertyValue('left').substring(0, getComputedStyle(popup).getPropertyValue('left').length-2)
 for (i=0;i<153;i++){
     savedInput[i] = " "
 }
-
 let thing = detranslate(document.location.search.replace(/^.*?\=/, ""));
 for (i=0;i<thing.length;i++){
     savedInput[i] = thing[i]
 }
-console.log(savedInput)
 let cycleEnded = [];
 let cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#&?;. ".split("");
 let countDown;
+
+for (r=0;r<153;r++){
+    grid.innerHTML+="<td><input type=\"text\" id="+r+" readonly=\"true\" /></td>"
+}
+for (i=0;i<153;i++){
+    textfields.push(document.getElementById(""+i));
+    textfields[i].style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
+}
+playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+if (smallScreen){
+    playButton.style.fontSize = Math.floor((window.innerWidth*(128/1920)))+"px"
+    playButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
+    playButton.style.setProperty('--leftPOS', 680/19.2 + "vw")
+}
+window.addEventListener('resize', ()=>{
+    initTop = getComputedStyle(popup).getPropertyValue('top').substring(0, getComputedStyle(popup).getPropertyValue('top').length-2)
+    initLeft = getComputedStyle(popup).getPropertyValue('left').substring(0, getComputedStyle(popup).getPropertyValue('left').length-2)
+    smallScreen = window.innerWidth<=1300
+    if (!smallScreen){
+        playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+        playButton.style.setProperty('--topPOS', "19.53125vw")
+        playButton.style.setProperty('--leftPOS', "88.02083vw")
+        leftArr.remove()
+        rightArr.remove()
+        popup.remove() 
+        removeFadeEffect()
+        if (!firstTime){
+            document.body.appendChild(label)
+        }
+    }
+    else{
+        label.remove()
+        playButton.style.fontSize = Math.floor((window.innerWidth*(128/1920)))+"px"
+        playButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
+        playButton.style.setProperty('--leftPOS', 680/19.2 + "vw")
+        if (!firstTime){
+            document.body.appendChild(leftArr)
+            document.body.appendChild(rightArr)
+            
+        }
+    }
+    for (i=0;i<textfields.length;i++){
+        textfields[i].style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
+    }
+    diff = Math.abs(getComputedStyle(leftArr).getPropertyValue('top').substring(0, getComputedStyle(leftArr).getPropertyValue('top').length-2) - getComputedStyle(playButton).getPropertyValue('top').substring(0, getComputedStyle(playButton).getPropertyValue('top').length-2))
+    adjustArrow()
+
+})
+
+leftArr.addEventListener('click', ()=>{
+    document.body.appendChild(popup)
+    popup.classList.add('show-pop-up')
+    addFadeEffect()
+    leftArr.remove()
+    rightArr.remove()
+    adOnScreen = true
+    popup.addEventListener('animationend', ()=>{
+        document.body.appendChild(popup)
+        
+    }) 
+})
+
+rightArr.addEventListener('click', ()=>{
+    document.body.appendChild(popup)
+    popup.classList.add('show-pop-up')
+    addFadeEffect()
+    leftArr.remove()
+    rightArr.remove()
+    adOnScreen = true
+
+    popup.addEventListener('animationend', ()=>{
+        document.body.appendChild(popup)
+    }) 
+    
+})
+
+count=0;
+if (playButton!=null){
+    let down = false;
+    playButton.addEventListener('mousedown', function(){
+        if (!adOnScreen){
+            down = true;
+            if (!smallScreen){
+                playButton.classList.remove('loose')
+                playButton.classList.remove('go-back');
+                playButton.classList.add('touching');
+                playButton.addEventListener('animationend', function(){
+                    playButton.classList.remove('setPOS')
+                    playButton.classList.add('squeeze')
+                })
+            }
+            else{
+                playButton.style.backgroundColor = '#AEAEAE';
+            }
+        }
+        
+    })
+    window.addEventListener('mouseup', function(){
+        if (!smallScreen){
+            for (i=0;i<playButton.classList.length;i++){
+                if (playButton.classList[i]==='touching'){
+                    playButton.classList.remove('touching');
+                    playButton.classList.remove('squeeze')
+                    playButton.classList.add('go-back');
+                    playButton.classList.add('loose')
+                    play()
+                    
+                }
+            }
+        }
+        if (smallScreen && down){
+            down = false;
+            playButton.style.backgroundColor = '#FFFFFF'
+            play()
+        }
+    })
+
+    link.addEventListener('click', function(){
+        link.textContent = "";
+        // label.classList.add('hide')
+        label.remove()
+    })
+    
+}
+let offset = [0,0];
+let mousedown = false;
+if (popup!=null){
+    popup.addEventListener('touchstart', event=>{
+        downOperation(event.touches[0])
+    }, true)
+    window.addEventListener('touchmove', event=>{
+        moveOperation(event.touches[0])
+    }, true)
+    window.addEventListener('touchend', ()=>{
+        upOperation()
+    }, true)
+    
+    popup.addEventListener('mousedown', event=>{
+        downOperation(event)
+    }, true)
+    window.addEventListener('mousemove', event=>{
+        moveOperation(event)
+    }, true)
+    window.addEventListener('mouseup', ()=>{
+       upOperation()
+    }, true)
+    
+}
+
+function handleGesure(){
+    let changeX = touchstartX - touchendX
+    let changeY = touchstartY - touchendY
+    if (touchendY > touchstartY && Math.abs(changeY)>Math.abs(changeX) && Math.abs(changeY)>60){
+        return 'down'
+    }
+    return 'other'
+}
+
+function downOperation(event){
+    initTop = getComputedStyle(popup).getPropertyValue('top').substring(0, getComputedStyle(popup).getPropertyValue('top').length-2)
+    initLeft = getComputedStyle(popup).getPropertyValue('left').substring(0, getComputedStyle(popup).getPropertyValue('left').length-2)
+    touchstartX = event.clientX;
+    touchstartY = event.clientY;
+    //event.preventDefault()
+    if (event.target!=popupLink){
+        mousedown = true;
+        offset = [
+            popup.offsetLeft - event.clientX,
+            popup.offsetTop - event.clientY
+        ];
+    
+    }
+       
+}
+
+function moveOperation(event){
+    //event.preventDefault()
+    if (mousedown){
+        touchendX = event.clientX;
+        touchendY = event.clientY; 
+        let direction = handleGesure() 
+        if (direction!='down'){
+            if (Math.abs(event.clientX + offset[0]-initLeft) < 60){
+                popup.style.left = (event.clientX + offset[0]) +"px"
+            }
+            if (Math.abs(event.clientY + offset[1]-initTop) < 60){
+                popup.style.top = (event.clientY + offset[1]) + "px"
+            }  
+        }
+        else{
+            popup.style.setProperty('--start-XPOS', popup.style.left)
+            popup.style.setProperty('--start-YPOS', popup.style.top)
+            popup.classList.add('hide-pop-up')  
+            popup.addEventListener('animationend', hideAD)
+        }  
+    }
+}
+
+function hideAD(){
+    document.body.appendChild(leftArr)
+    document.body.appendChild(rightArr) 
+    adjustArrow()
+    adOnScreen = false
+    popup.classList.remove('hide-pop-up')
+    popup.classList.remove('show-pop-up')
+    popup.style.setProperty('--start-XPOS', "17.7vw")
+    popup.style.setProperty('--start-YPOS', "18vh")
+    removeFadeEffect()
+    popup.removeEventListener('animationend', hideAD)
+    popup.remove()
+
+}
+function upOperation(){
+    if (mousedown){
+        mousedown = false;
+        popup.style.setProperty('--start-XPOS', popup.style.left)
+        popup.style.setProperty('--start-YPOS', popup.style.top)
+        popup.classList.add('return-to-center')  
+        popup.addEventListener('animationend', ()=>{
+            popup.style.top = '18vh'
+            popup.style.left = '17.7vw'
+            popup.classList.remove('return-to-center')
+            
+        })
+    }
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function detranslate(message){
@@ -52,7 +307,6 @@ function detranslate(message){
         }
         else if (message[i]=='('){
             num = decipher(message[i+1])
-            console.log(true)
             decodedMessage+=num
             if (num==""){
                 decodedMessage+=message[i+1]
@@ -65,7 +319,7 @@ function detranslate(message){
             decodedMessage += String.fromCharCode(message[i].charCodeAt(0)-shift)
         }
     }
-    console.log(decodedMessage)
+
     return decodedMessage.split("")
 }
 function decipher(temp){
@@ -97,44 +351,7 @@ function decipher(temp){
             
     }
 }
-for (r=0;r<9;r++){
-    table.innerHTML+="<tr id=\"row" + r + "\"></tr>"
-    for (c=0;c<17;c++){
-        document.getElementById("row"+r).innerHTML += "<td><input type=\"text\" id="+count+" readonly=\"true\" /></td>"
-        count++;
-    }
-}
-for (i=0;i<count;i++){
-    textfields.push(document.getElementById(""+i));
-}
 
-count=0;
-if (button!=null){
-    
-    button.addEventListener('mousedown', function(){
-        button.classList.remove('go-back');
-        button.classList.add('touching');
-        
-    })
-    window.addEventListener('mouseup', function(){
-        for (i=0;i<button.classList.length;i++){
-            if (button.classList[i]==='touching'){
-                button.classList.remove('touching');
-                button.classList.add('go-back');
-                cycleEnded = [];
-                alphabetDone = false;
-                cycleDone = false;
-                count=0;
-                timer = setInterval(onTick, 50);
-            }
-        }
-    })
-    link.addEventListener('click', function(){
-        link.textContent = "";
-        label.classList.add('hide')
-    })
-    
-}
 function showChars(){
     link.innerHTML += "<span class=\"letters\">"+ linkText[count]+"</span>"
     count++;
@@ -143,8 +360,23 @@ function showChars(){
         countDown = null;
     }
 }
+
+function play(){
+    if (animationFinished){
+        animationFinished = false;
+        for (i=0;i<textfields.length;i++){
+            savedInput[i] = textfields[i].value
+            textfields[i].readOnly = true
+        }
+        cycleEnded = [];
+        alphabetDone = false;
+        cycleDone = false;
+        count=0;
+        timer = setInterval(onTick, 50); 
+    }
+}
+
 function onTick(){
-    let firstTime = true;
     if (cycleDone){
         for (i=0;i<textfields.length;i++){
             if (savedInput[i] == ""){
@@ -157,15 +389,28 @@ function onTick(){
         clearInterval(timer);
         timer = null;
         count=0;
-        for (i=0;i<label.classList.length;i++){
-            if (label.classList[i]==='show'){
-                firstTime = false;
-            }
-        }
+       
         if (firstTime){
-            label.classList.add('show')
-            countDown = setInterval(showChars, 45)
+            if (!smallScreen){
+                document.body.appendChild(label)
+                label.classList.add('show')
+                //countDown = setInterval(showChars, 45) 
+                }
+            else{
+                adOnScreen = true;
+                document.body.appendChild(popup)
+                popup.classList.add('show-pop-up')
+                addFadeEffect()
+                popup.addEventListener('animationend', ()=>{
+                    popup.classList.remove('show-pop-up')
+                }) 
+            }
+            firstTime = false;
         }
+        
+        
+
+        
         
     }
     else if (alphabetDone){
@@ -197,11 +442,34 @@ function onTick(){
     
 }
 
+function adjustArrow(){
+    let diff = Math.abs(getComputedStyle(leftArr).getPropertyValue('top').substring(0, getComputedStyle(leftArr).getPropertyValue('top').length-2) - getComputedStyle(playButton).getPropertyValue('top').substring(0, getComputedStyle(playButton).getPropertyValue('top').length-2))
+    if (diff<700){
+        leftArr.style.position = "absolute"
+        leftArr.style.top =(500+ parseInt(getComputedStyle(playButton).getPropertyValue('top')))+"px"
+        rightArr.style.position = "absolute"
+        rightArr.style.top =(500+ parseInt(getComputedStyle(playButton).getPropertyValue('top')))+"px"
+    }
+}
+
+function addFadeEffect(){
+    playButton.classList.add('fade')
+    grid.classList.add('fade')
+    playButton.style.cursor = "auto"
+    
+}
+function removeFadeEffect(){
+    playButton.classList.remove('fade')
+    grid.classList.remove('fade')
+    playButton.style.cursor = "pointer"
+}
+
 function out(){
-    button.classList.remove('touching')
-    button.classList.add('go-back');
+    playButton.classList.remove('touching')
+    playButton.classList.add('go-back');
 }
 function over(){
-    button.classList.remove('go-back')
-    button.classList.add('touching')
+    playButton.classList.remove('go-back')
+    playButton.classList.add('touching')
 }
+
