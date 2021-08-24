@@ -458,10 +458,14 @@ function adjustArrow(){
         rightArr.style.position = "absolute"
         rightArr.style.top =(500+ parseInt(getComputedStyle(playButton).getPropertyValue('top')))+"px"
     }
-    // else{
-    //     leftArr.style.position = "absolute"
-    //     leftArr.style.top = ""
-    // }
+    else{
+        leftArr.style.position = "fixed"
+        leftArr.style.top = "unset"
+        leftArr.style.bottom = "10px"
+        rightArr.style.position = "fixed"
+        rightArr.style.top = "unset"
+        rightArr.style.bottom = "10px"
+    }
 }
 
 function addFadeEffect(){
