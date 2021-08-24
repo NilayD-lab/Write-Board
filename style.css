@@ -14,11 +14,12 @@
 .lock-screen {
   height: 100%;
   overflow: hidden;
- 
+  width: 100%;
+  position: fixed;
 }
 input {
   display: inline;
-  background: #0f0f0f;
+  background: blue;
   color: white;
   font-size: 2.375rem;
   width: 3.2vw;
