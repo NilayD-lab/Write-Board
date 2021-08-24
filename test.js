@@ -100,7 +100,7 @@ leftArr.addEventListener('click', ()=>{
     popup.addEventListener('animationend', ()=>{
         document.body.appendChild(popup)
         document.documentElement.style.overflow = 'hidden';
-        
+        document.documentElement.classList.add('lock-screen')
         
     }) 
 })
@@ -117,6 +117,7 @@ rightArr.addEventListener('click', ()=>{
     popup.addEventListener('animationend', ()=>{
         document.body.appendChild(popup)
         document.documentElement.style.overflow = 'hidden';
+        document.documentElement.classList.add('lock-screen')
     }) 
     
 })
@@ -254,6 +255,7 @@ function hideAD(){
     popup.style.setProperty('--start-YPOS', "18vh")
     removeFadeEffect()
     document.documentElement.style.overflow = 'auto';
+    document.documentElement.classList.remove('lock-screen')
     popup.removeEventListener('animationend', hideAD)
     popup.remove()
 
@@ -406,6 +408,7 @@ function onTick(){
                 popup.addEventListener('animationend', ()=>{
                     popup.classList.remove('show-pop-up')
                     document.documentElement.style.overflow = 'hidden';
+                    document.documentElement.classList.add('lock-screen')
                 }) 
             }
             firstTime = false;
@@ -455,6 +458,10 @@ function adjustArrow(){
         rightArr.style.position = "absolute"
         rightArr.style.top =(500+ parseInt(getComputedStyle(playButton).getPropertyValue('top')))+"px"
     }
+    // else{
+    //     leftArr.style.position = "absolute"
+    //     leftArr.style.top = ""
+    // }
 }
 
 function addFadeEffect(){
