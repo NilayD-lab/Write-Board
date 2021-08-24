@@ -99,7 +99,7 @@ leftArr.addEventListener('click', ()=>{
     adOnScreen = true
     popup.addEventListener('animationend', ()=>{
         document.body.appendChild(popup)
-        document.body.classList.add('lock-screen')
+        document.documentElement.style.overflow = 'hidden';
         
         
     }) 
@@ -116,7 +116,7 @@ rightArr.addEventListener('click', ()=>{
 
     popup.addEventListener('animationend', ()=>{
         document.body.appendChild(popup)
-        document.body.classList.add('lock-screen')
+        document.documentElement.style.overflow = 'hidden';
     }) 
     
 })
@@ -253,7 +253,7 @@ function hideAD(){
     popup.style.setProperty('--start-XPOS', "17.7vw")
     popup.style.setProperty('--start-YPOS', "18vh")
     removeFadeEffect()
-    document.body.classList.remove('lock-screen')
+    document.documentElement.style.overflow = 'auto';
     popup.removeEventListener('animationend', hideAD)
     popup.remove()
 
@@ -405,7 +405,7 @@ function onTick(){
                 addFadeEffect()
                 popup.addEventListener('animationend', ()=>{
                     popup.classList.remove('show-pop-up')
-                    document.body.classList.add('lock-screen')
+                    document.documentElement.style.overflow = 'hidden';
                 }) 
             }
             firstTime = false;
@@ -425,7 +425,7 @@ function onTick(){
             }
             if (textfields[i].value == savedInput[i]){
                 cycleEnded.push(textfields[i]);
-                
+                console.log("*")
             }
         }
         count++;
