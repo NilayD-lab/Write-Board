@@ -1,126 +1,148 @@
+let adOnScreen = false;
+let firstTime = true;
+let leftArr = document.getElementById('leftarr')
+let rightArr = document.getElementById('rightarr')
+leftArr.remove()
+rightArr.remove()
+let popup = document.getElementById('pop-up')
+popup.remove()
+let touchstartX = 0;
+let touchstartY = 0;
+let touchendX = 0;
+let touchendY = 0;
 let animationFinished = true;
-let backspacePressed = false;
-let input = document.getElementById('inputz')
-let clearButton = document.getElementById('clear')
-let sendButton = document.getElementById('send')
-let savedInput= []
-for (i = 0;i<153;i++){
-    savedInput[i] = ""
-}
+let label = document.getElementById("ad")
+let link = document.getElementById("link")
+let linkText = link.textContent.split("")
+label.remove()
+let popupLink = document.getElementById('pop-up-link')
 let grid = document.getElementById("grid")
 let textfields = [];
 let alphabets = "ABCDEFGHIJKLMNOQRSTUVWXYZ".split("");
-let playButton = document.getElementById("play");
+let playButton = document.querySelector(".play");
+playButton.classList.add('setPOS')
 let count = 0;
 let timer;
 let alphabetDone= false;
 let cycleDone = false;
+let savedInput = [];
+let smallScreen = window.innerWidth<=1300
+let initTop = getComputedStyle(popup).getPropertyValue('top').substring(0, getComputedStyle(popup).getPropertyValue('top').length-2)
+let initLeft = getComputedStyle(popup).getPropertyValue('left').substring(0, getComputedStyle(popup).getPropertyValue('left').length-2)
+for (i=0;i<153;i++){
+    savedInput[i] = " "
+}
+let thing = detranslate(document.location.search.replace(/^.*?\=/, ""));
+for (i=0;i<thing.length;i++){
+    savedInput[i] = thing[i]
+}
+
 let cycleEnded = [];
 let cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#&?;. ".split("");
 let countDown;
-let smallScreen = window.innerWidth<=1300
-let atStartOfInput = false;
-playButton.classList.add('setPOS')
-clearButton.classList.add('setPOS')
-sendButton.classList.add('setPOS')
+
 for (r=0;r<153;r++){
-    grid.innerHTML+="<input type=\"text\" id="+r+" maxlength=\"1\" />"
+    grid.innerHTML+="<td><input type=\"text\" id="+r+" readonly=\"true\" /></td>"
 }
 for (i=0;i<153;i++){
     textfields.push(document.getElementById(""+i));
-    setTextfields(i)
     textfields[i].style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
 }
-playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
-clearButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
-sendButton.style.fontSize =Math.floor((window.innerWidth*(32/1920)))+"px"
-if (smallScreen){
-    playButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
-    clearButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
-    sendButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
-    playButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
-    playButton.style.setProperty('--leftPOS', 300/19.2 + "vw")
-    clearButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
-    clearButton.style.setProperty('--leftPOS', 830/19.2 + "vw")
-    sendButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
-    sendButton.style.setProperty('--leftPOS', 1330/19.2 + "vw")
-}
 
-window.addEventListener('resize', function(){
+playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
+if (smallScreen){
+    playButton.style.fontSize = Math.floor((window.innerWidth*(128/1920)))+"px"
+    playButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
+    playButton.style.setProperty('--leftPOS', 680/19.2 + "vw")
+}
+window.addEventListener('resize', ()=>{
+    console.log("resize")
+    initTop = getComputedStyle(popup).getPropertyValue('top').substring(0, getComputedStyle(popup).getPropertyValue('top').length-2)
+    initLeft = getComputedStyle(popup).getPropertyValue('left').substring(0, getComputedStyle(popup).getPropertyValue('left').length-2)
     smallScreen = window.innerWidth<=1300
     if (!smallScreen){
         playButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
-        clearButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
-        sendButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
-        playButton.style.setProperty('--topPOS', "6.77vw")
+        playButton.style.setProperty('--topPOS', "19.53125vw")
         playButton.style.setProperty('--leftPOS', "88.02083vw")
-        clearButton.style.setProperty('--topPOS', "19.53125vw")
-        clearButton.style.setProperty('--leftPOS', "88.02083vw")
-        sendButton.style.setProperty('--topPOS', "32.2916vw")
-        sendButton.style.setProperty('--leftPOS', "88.02083vw")
+        leftArr.remove()
+        rightArr.remove()
+        popup.remove() 
+        removeFadeEffect()
+        if (!firstTime){
+            document.body.appendChild(label)
+        }
     }
     else{
-        
-        playButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
-        clearButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
-        sendButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
+        label.remove()
+        playButton.style.fontSize = Math.floor((window.innerWidth*(128/1920)))+"px"
         playButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
-        playButton.style.setProperty('--leftPOS', 300/19.2 + "vw")
-        clearButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
-        clearButton.style.setProperty('--leftPOS', 830/19.2 + "vw")
-        sendButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
-        sendButton.style.setProperty('--leftPOS', 1330/19.2 + "vw")
-        
+        playButton.style.setProperty('--leftPOS', 680/19.2 + "vw")
+        if (!firstTime){
+            document.body.appendChild(leftArr)
+            document.body.appendChild(rightArr)
+            
+        }
     }
     for (i=0;i<textfields.length;i++){
         textfields[i].style.fontSize = Math.floor((window.innerWidth*(38/1920)))+"px"
     }
+    diff = Math.abs(getComputedStyle(leftArr).getPropertyValue('top').substring(0, getComputedStyle(leftArr).getPropertyValue('top').length-2) - getComputedStyle(playButton).getPropertyValue('top').substring(0, getComputedStyle(playButton).getPropertyValue('top').length-2))
+    adjustArrow()
+
 })
 
+leftArr.addEventListener('click', ()=>{
+    document.body.appendChild(popup)
+    popup.classList.add('show-pop-up')
+    addFadeEffect()
+    leftArr.remove()
+    rightArr.remove()
+    adOnScreen = true
+    popup.addEventListener('animationend', ()=>{
+        document.body.appendChild(popup)
+        document.documentElement.style.overflow = 'hidden';
+        document.documentElement.classList.add('lock-screen')
+        
+    }) 
+})
 
+rightArr.addEventListener('click', ()=>{
+    document.body.appendChild(popup)
+    popup.classList.add('show-pop-up')
+    addFadeEffect()
+    leftArr.remove()
+    rightArr.remove()
+    adOnScreen = true
+    
 
-if (playButton!=null && clearButton!=null){ 
+    popup.addEventListener('animationend', ()=>{
+        document.body.appendChild(popup)
+        document.documentElement.style.overflow = 'hidden';
+        document.documentElement.classList.add('lock-screen')
+    }) 
+    
+})
+
+count=0;
+if (playButton!=null){
+    let down = false;
     playButton.addEventListener('mousedown', function(){
-        if (!smallScreen){
-            playButton.classList.remove('loose')
-            playButton.classList.remove('go-back');
-            playButton.classList.add('touching');
-            playButton.addEventListener('animationend', function(){
-                playButton.classList.remove('setPOS')
-                playButton.classList.add('squeeze')
-            })
+        if (!adOnScreen){
+            down = true;
+            if (!smallScreen){
+                playButton.classList.remove('loose')
+                playButton.classList.remove('go-back');
+                playButton.classList.add('touching');
+                playButton.addEventListener('animationend', function(){
+                    playButton.classList.remove('setPOS')
+                    playButton.classList.add('squeeze')
+                })
+            }
+            else{
+                playButton.style.backgroundColor = '#AEAEAE';
+            }
         }
-        else{
-            playButton.style.backgroundColor = '#AEAEAE';
-        }
-    })
-    clearButton.addEventListener('mousedown', function(){
-        if (!smallScreen){
-            clearButton.classList.remove('loose')
-            clearButton.classList.remove('go-back');
-            clearButton.classList.add('touching');
-            clearButton.addEventListener('animationend', function(){
-                clearButton.classList.remove('setPOS')
-                clearButton.classList.add('squeeze')
-            })
-        }
-        else{
-            clearButton.style.backgroundColor = '#AEAEAE';
-        }
-    })
-    sendButton.addEventListener('mousedown', function(){
-        if (!smallScreen){
-            sendButton.classList.remove('loose')
-            sendButton.classList.remove('go-back');
-            sendButton.classList.add('touching');
-            sendButton.addEventListener('animationend', function(){
-                sendButton.classList.remove('setPOS')
-                sendButton.classList.add('squeeze')
-            })
-        }
-        else{
-            sendButton.style.backgroundColor = '#AEAEAE';
-        }
+        
     })
     window.addEventListener('mouseup', function(){
         if (!smallScreen){
@@ -134,184 +156,229 @@ if (playButton!=null && clearButton!=null){
                     
                 }
             }
-            for (i=0;i<clearButton.classList.length;i++){
-                if (clearButton.classList[i]==='touching'){
-                    clearButton.classList.remove('touching');
-                    clearButton.classList.remove('squeeze')
-                    clearButton.classList.add('go-back');
-                    clearButton.classList.add('loose')
-                    clear()
-                    
-                }
-            }
-            for (i=0;i<sendButton.classList.length;i++){
-                if (sendButton.classList[i]==='touching'){
-                    sendButton.classList.remove('touching');
-                    sendButton.classList.remove('squeeze')
-                    sendButton.classList.add('go-back');
-                    sendButton.classList.add('loose')
-                    send()
-                
-                }
-            }
         }
-    }) 
-    playButton.addEventListener('mouseup', ()=>{
-        if (smallScreen){
+        if (smallScreen && down){
+            down = false;
             playButton.style.backgroundColor = '#FFFFFF'
             play()
         }
     })
-    clearButton.addEventListener('mouseup', ()=>{
-        if (smallScreen){
-            clearButton.style.backgroundColor = '#FFFFFF'
-            clear()
-        }
+
+    link.addEventListener('click', function(){
+        link.textContent = "";
+        // label.classList.add('hide')
+        label.remove()
     })
-    sendButton.addEventListener('mouseup', ()=>{
-        if (smallScreen){
-            sendButton.style.backgroundColor = '#FFFFFF'
-            send()
+    
+}
+let offset = [0,0];
+let mousedown = false;
+if (popup!=null){
+    popup.addEventListener('touchstart', event=>{
+        downOperation(event.touches[0])
+    }, true)
+    window.addEventListener('touchmove', event=>{
+        moveOperation(event.touches[0])
+    }, true)
+    window.addEventListener('touchend', ()=>{
+        upOperation()
+    }, true)
+    
+    popup.addEventListener('mousedown', event=>{
+        downOperation(event)
+    }, true)
+    window.addEventListener('mousemove', event=>{
+        moveOperation(event)
+    }, true)
+    window.addEventListener('mouseup', ()=>{
+       upOperation()
+    }, true)
+    
+}
+
+function handleGesure(){
+    let changeX = touchstartX - touchendX
+    let changeY = touchstartY - touchendY
+    if (touchendY > touchstartY && Math.abs(changeY)>Math.abs(changeX) && Math.abs(changeY)>60){
+        return 'down'
+    }
+    return 'other'
+}
+
+function downOperation(event){
+    initTop = getComputedStyle(popup).getPropertyValue('top').substring(0, getComputedStyle(popup).getPropertyValue('top').length-2)
+    initLeft = getComputedStyle(popup).getPropertyValue('left').substring(0, getComputedStyle(popup).getPropertyValue('left').length-2)
+    touchstartX = event.clientX;
+    touchstartY = event.clientY;
+    //event.preventDefault()
+    if (event.target!=popupLink){
+        mousedown = true;
+        offset = [
+            popup.offsetLeft - event.clientX,
+            popup.offsetTop - event.clientY
+        ];
+    
+    }
+       
+}
+
+function moveOperation(event){
+    //event.preventDefault()
+    if (mousedown){
+        touchendX = event.clientX;
+        touchendY = event.clientY; 
+        let direction = handleGesure() 
+        if (direction!='down'){
+            if (Math.abs(event.clientX + offset[0]-initLeft) < 60){
+                popup.style.left = (event.clientX + offset[0]) +"px"
+            }
+            if (Math.abs(event.clientY + offset[1]-initTop) < 60){
+                popup.style.top = (event.clientY + offset[1]) + "px"
+            }  
         }
-    })
+        else{
+            popup.style.setProperty('--start-XPOS', popup.style.left)
+            popup.style.setProperty('--start-YPOS', popup.style.top)
+            popup.classList.add('hide-pop-up')  
+            popup.addEventListener('animationend', hideAD)
+        }  
+    }
+}
+
+function hideAD(){
+    document.body.appendChild(leftArr)
+    document.body.appendChild(rightArr) 
+    adjustArrow()
+    adOnScreen = false
+    popup.classList.remove('hide-pop-up')
+    popup.classList.remove('show-pop-up')
+    popup.style.setProperty('--start-XPOS', "17.7vw")
+    popup.style.setProperty('--start-YPOS', "18vh")
+    removeFadeEffect()
+    document.documentElement.style.overflow = 'auto';
+    document.documentElement.classList.remove('lock-screen')
+    popup.removeEventListener('animationend', hideAD)
+    popup.remove()
+
+}
+function upOperation(){
+    if (mousedown){
+        mousedown = false;
+        popup.style.setProperty('--start-XPOS', popup.style.left)
+        popup.style.setProperty('--start-YPOS', popup.style.top)
+        popup.classList.add('return-to-center')  
+        popup.addEventListener('animationend', ()=>{
+            popup.style.top = '18vh'
+            popup.style.left = '17.7vw'
+            popup.classList.remove('return-to-center')
+            
+        })
+    }
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function detranslate(message){
+    let num = "";
+    let decodedMessage = ""
+    let shift = parseInt(message[0] + message[2])
+    for (i=5;i<message.length;i++){
+        if (message[i]=="!"){
+            for (z=i+1;message[z]!="!";z++){
+                num+=message[z];
+            }
+            for (j=0;j<parseInt(num);j++){
+                decodedMessage += " "
+                
+            }
+            i+=num.length+1
+            num=""
+        }
+        else if (message[i]=="$"){
+            for (z=i+1;message[z]!="$";z++){
+                num+=message[z]
+            }
+            decodedMessage+=String.fromCharCode(decipher(num).charCodeAt(0)-shift)
+            i+=num.length+1
+            num=""
+        }
+        else if (message[i]=='('){
+            num = decipher(message[i+1])
+            decodedMessage+=num
+            if (num==""){
+                decodedMessage+=message[i+1]
+            }
+            num=""
+            i++
+        }
+        else{
+            num=""
+            decodedMessage += String.fromCharCode(message[i].charCodeAt(0)-shift)
+        }
+    }
+
+    return decodedMessage.split("")
+}
+function decipher(temp){
+    switch (temp){
+        case "0":
+            return "{"
+        case "1":
+            return "}"
+        case "2":
+            return "["
+        case "3":
+            return "]"
+        case "4":
+            return "<"
+        case "5":
+            return ">"
+        case "6":
+            return "|"
+        case "7":
+            return "'\'"
+        case "8":
+            return "^"
+        case "9":
+            return "~"
+        case "10":
+            return "`"
+        default: 
+            return ""
+            
+    }
+}
+
+function showChars(){
+    link.innerHTML += "<span class=\"letters\">"+ linkText[count]+"</span>"
+    count++;
+    if (count===linkText.length){
+        clearInterval(countDown)
+        countDown = null;
+    }
 }
 
 function play(){
     if (animationFinished){
         animationFinished = false;
-        for (i=0;i<textfields.length;i++){
-            savedInput[i] = textfields[i].value
-            textfields[i].readOnly = true
-        }
         cycleEnded = [];
         alphabetDone = false;
         cycleDone = false;
         count=0;
         timer = setInterval(onTick, 50); 
-    }
-}
-
-function clear(){
-    if (animationFinished){
-        cycleEnded = [];
-        alphabetDone = false;
-        cycleDone = false;
-        count=0;
-        savedInput = [];
-        for (i=0;i<textfields.length;i++){
-            textfields[i].value = " "
-            savedInput[i] = ""
-        } 
-    }
-}
-
-function send(){
-    for (i=0;i<savedInput.length;i++){
-        savedInput[i] = textfields[i].value
-        if (savedInput[i]===""){
-            savedInput[i] = " "
-        }
-    }
-
-    const el = document.createElement('textarea');
-    el.value = "http://nilayd-lab.github.io/Write-Board/open.html?arr=" + translate();
-    el.setAttribute('readonly', '');
-    el.style.position = 'absolute';
-    el.style.left = '-9999px';
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el)
-    sendButton.textContent = "COPIED"
-    if (smallScreen){
-        sendButton.style.fontSize = Math.floor((window.innerWidth*(64/1920)))+"px"
-    }
-    else{
-        sendButton.style.fontSize = Math.floor((window.innerWidth*(32/1920)))+"px"
-    }
-    let newTimer = this.setInterval(function(){
-        sendButton.textContent = "SEND"
-        clearInterval(newTimer)
-        newTimer = null
-    }, 500)
-}
-function translate(){
-    let temp = ""
-    let shift = Math.trunc(((Math.random()*4)+10))
-    let message = shift.toString()[0] + Math.trunc(Math.random()*10) + shift.toString()[1] + Math.trunc(Math.random()*10) +"-"
-    let count= 0
-    for (i=0;i<savedInput.length;i++){
-        if (savedInput[i]===" "){
-            count++;
-        }
-        else{
-            if (count>0){
-                message+="!"+count+"!"
-            }
-            count=0;
-            temp = String.fromCharCode(savedInput[i].charCodeAt(0)+shift)
-            if (savedInput[i].charCodeAt(0)+shift<=126){
-                message+=cipher(temp)
-                if (cipher(temp)==""){
-                   message+=String.fromCharCode(savedInput[i].charCodeAt(0)+shift) 
-                }
-            }
-            else {
-                switch (temp){
-                    case "{":
-                        message+= "(0"
-                        break
-                    case "}":
-                        message+= "(1"
-                        break
-                    case "|":
-                        message+= "(6"
-                        break
-                    case "~":
-                        message+= "(9"
-                        break
-                }
-                if (message.charAt(message.length-1)!="("){
-                    message+="("+savedInput[i]
-                 }
-               
-            }
-            
-        }
-    }
-    if (count==savedInput.length){
-        message=""
-    }
-
-    return message
-}
-
-function cipher(temp){
-    switch (temp){
-        case "{":
-            return "$0$"
-        case "}":
-            return "$1$"
-        case "[":
-            return "$2$"
-        case "]":
-            return "$3$"
-        case "<":
-            return "$4$"
-        case ">":
-            return "$5$"
-        case "|":
-            return "$6$"
-        case "'\'":
-            return "$7$"
-        case "^":
-            return "$8$"
-        case "~":
-            return "$9$"
-        case "`":
-            return "$10$"
-        default:
-            return ""    
     }
 }
 
@@ -325,23 +392,44 @@ function onTick(){
                 textfields[i].value = savedInput[i];
             }
         }
-        for (i=0;i<textfields.length;i++){
-            textfields[i].readOnly = false
-        }
         clearInterval(timer);
         timer = null;
         count=0;
-        animationFinished = true
+        animationFinished  = true
+        if (firstTime){
+            if (!smallScreen){
+                document.body.appendChild(label)
+                label.classList.add('show')
+                }
+            else{
+                adOnScreen = true;
+                document.body.appendChild(popup)
+                popup.classList.add('show-pop-up')
+                addFadeEffect()
+                popup.addEventListener('animationend', ()=>{
+                    popup.classList.remove('show-pop-up')
+                    document.documentElement.style.overflow = 'hidden';
+                    document.documentElement.classList.add('lock-screen')
+                }) 
+            }
+            firstTime = false;
+        }
+        
+        
+
+        
         
     }
     else if (alphabetDone){
+    
         for (i=0;i<textfields.length;i++){
             if (!cycleEnded.includes(textfields[i])){
                 textfields[i].value = cycle[count];
+                
             }
             if (textfields[i].value == savedInput[i]){
                 cycleEnded.push(textfields[i]);
-                
+                console.log("*")
             }
         }
         count++;
@@ -362,95 +450,43 @@ function onTick(){
     
     
 }
-//maxlength=\"1\"
-function setTextfields(i){
-    if (textfields[i].readOnly==true){
-        return
-    }
-    textfields[i].addEventListener('keydown', function(event){
-        if(textfields[i].value==="" && event.key!="Backspace" && event.key!="Enter" && event.key!="ArrowLeft"){
-            textfields[i].value = ""
-        }
-        if (textfields[i].value!="" && event.key=="Backspace"){
-            if (textfields[i].value.length!=textfields[i].selectionEnd && i!=0){
-                textfields[i-1].focus()
-                savedInput[i-1] = ""
-            }
-            specialKeyPressed = true;
-            savedInput[i] = ""
-        }
-        else if (textfields[i].value=="" && event.key=="Backspace" && i!=0){
-            specialKeyPressed = true;
-            textfields[i-1].focus()
-            savedInput[i-1] = ""
-        }
-        else if (event.key=="Enter" && i<136){
-            specialKeyPressed = true
-            textfields[i+17].focus()
-        }
-        else if (event.key=="ArrowLeft" && i!=0){
-            specialKeyPressed = true
-            textfields[i-1].focus()
-            event.preventDefault()
-        
-        }
-        else if (event.key=="ArrowRight" && i!=152){
-            specialKeyPressed = true
-            textfields[i+1].focus()
-            event.preventDefault()
-        }
-        else if (event.key=="ArrowUp" && i>16){
-            specialKeyPressed = true
-            textfields[i-17].focus()
-            event.preventDefault()
-        }
-        else if (event.key=="ArrowDown" && i<136){
-            specialKeyPressed = true
-            textfields[i+17].focus()
-            event.preventDefault()
-        }
-        else if (event.key.length<2){ 
-            specialKeyPressed = false;
-            if (event.key.charCodeAt(0)<=126){
-                textfields[i].value = event.key
-            }
-            else{
-                specialKeyPressed = true
-            }
-           
-        }
-        
-        
-        textfields[i].addEventListener('keypress', function(event){
-            if (specialKeyPressed && textfields[i].value!==""){
-                savedInput[i] = textfields[i].value
-                
-            }
-            if (textfields[i].value ==="" && !specialKeyPressed){
-                savedInput[i] = textfields[i].value
-            }
-            if (i+1!=textfields.length && !specialKeyPressed){
-                savedInput[i] = textfields[i].value
-                textfields[i].blur();
-                textfields[i+1].focus()
-                event.preventDefault()
-                textfields[i+1].value = savedInput[i+1]
-            }
-            
-            
-            
-        })
 
-        
-        
-    })
+function adjustArrow(){
+    leftArr.style.position = "fixed"
+    leftArr.style.top = "unset"
+    leftArr.style.bottom = "10px"
+    rightArr.style.position = "fixed"
+    rightArr.style.top = "unset"
+    rightArr.style.bottom = "10px"
+    let diff = Math.abs(getComputedStyle(leftArr).getPropertyValue('top').substring(0, getComputedStyle(leftArr).getPropertyValue('top').length-2) - getComputedStyle(playButton).getPropertyValue('top').substring(0, getComputedStyle(playButton).getPropertyValue('top').length-2))
+    if (diff<700){
+        console.log(diff)
+        leftArr.style.position = "absolute"
+        leftArr.style.top =(500+ parseInt(getComputedStyle(playButton).getPropertyValue('top')))+"px"
+        rightArr.style.position = "absolute"
+        rightArr.style.top =(500+ parseInt(getComputedStyle(playButton).getPropertyValue('top')))+"px"
+    }
+    
+}
+
+function addFadeEffect(){
+    playButton.classList.add('fade')
+    grid.classList.add('fade')
+    playButton.style.cursor = "auto"
+    
+}
+function removeFadeEffect(){
+    playButton.classList.remove('fade')
+    grid.classList.remove('fade')
+    playButton.style.cursor = "pointer"
 }
 
 function out(){
-    button.classList.remove('touching')
-    button.classList.add('go-back');
+    playButton.classList.remove('touching')
+    playButton.classList.add('go-back');
 }
 function over(){
-    button.classList.remove('go-back')
-    button.classList.add('touching')
+    playButton.classList.remove('go-back')
+    playButton.classList.add('touching')
 }
+
