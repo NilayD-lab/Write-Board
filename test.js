@@ -56,6 +56,7 @@ if (smallScreen){
     playButton.style.setProperty('--leftPOS', 680/19.2 + "vw")
 }
 window.addEventListener('resize', ()=>{
+    console.log("resize")
     initTop = getComputedStyle(popup).getPropertyValue('top').substring(0, getComputedStyle(popup).getPropertyValue('top').length-2)
     initLeft = getComputedStyle(popup).getPropertyValue('left').substring(0, getComputedStyle(popup).getPropertyValue('left').length-2)
     smallScreen = window.innerWidth<=1300
@@ -451,21 +452,21 @@ function onTick(){
 }
 
 function adjustArrow(){
+    leftArr.style.position = "fixed"
+    leftArr.style.top = "unset"
+    leftArr.style.bottom = "10px"
+    rightArr.style.position = "fixed"
+    rightArr.style.top = "unset"
+    rightArr.style.bottom = "10px"
     let diff = Math.abs(getComputedStyle(leftArr).getPropertyValue('top').substring(0, getComputedStyle(leftArr).getPropertyValue('top').length-2) - getComputedStyle(playButton).getPropertyValue('top').substring(0, getComputedStyle(playButton).getPropertyValue('top').length-2))
     if (diff<700){
+        console.log(diff)
         leftArr.style.position = "absolute"
         leftArr.style.top =(500+ parseInt(getComputedStyle(playButton).getPropertyValue('top')))+"px"
         rightArr.style.position = "absolute"
         rightArr.style.top =(500+ parseInt(getComputedStyle(playButton).getPropertyValue('top')))+"px"
     }
-    else{
-        leftArr.style.position = "fixed"
-        leftArr.style.top = "unset"
-        leftArr.style.bottom = "10px"
-        rightArr.style.position = "fixed"
-        rightArr.style.top = "unset"
-        rightArr.style.bottom = "10px"
-    }
+    
 }
 
 function addFadeEffect(){
