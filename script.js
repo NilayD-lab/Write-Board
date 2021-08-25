@@ -378,7 +378,6 @@ function setTextfields(i){
             }
             specialKeyPressed = true;
             savedInput[i] = ""
-            console.log(savedInput)
         }
         else if (textfields[i].value=="" && event.key=="Backspace" && i!=0){
             specialKeyPressed = true;
@@ -422,7 +421,7 @@ function setTextfields(i){
         }
         
         
-        textfields[i].addEventListener('keypress', function(){
+        textfields[i].addEventListener('keypress', function(event){
             if (specialKeyPressed && textfields[i].value!==""){
                 savedInput[i] = textfields[i].value
                 
@@ -434,6 +433,7 @@ function setTextfields(i){
                 savedInput[i] = textfields[i].value
                 textfields[i].blur();
                 textfields[i+1].focus()
+                event.preventDefault()
                 textfields[i+1].value = savedInput[i+1]
             }
             
