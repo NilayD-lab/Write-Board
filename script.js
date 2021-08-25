@@ -376,10 +376,16 @@ function setTextfields(i){
                 textfields[i-1].focus()
             }
             specialKeyPressed = true;
+            for (r=0;r<savedInput.length;r++){
+                savedInput[r] = textfields[r].value
+            }
         }
         else if (textfields[i].value=="" && event.key=="Backspace" && i!=0){
             specialKeyPressed = true;
             textfields[i-1].focus()
+            for (r=0;r<savedInput.length;r++){
+                savedInput[r] = textfields[r].value
+            }
         }
         else if (event.key=="Enter" && i<136){
             specialKeyPressed = true
@@ -419,9 +425,6 @@ function setTextfields(i){
         
         
         textfields[i].addEventListener('keypress', function(){
-            for (r=0;r<savedInput.length;r++){
-                savedInput[r] = textfields[r].value
-            }
             if (specialKeyPressed && textfields[i].value!==""){
                 savedInput[i] = textfields[i].value
                 
