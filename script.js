@@ -5,7 +5,7 @@ let clearButton = document.getElementById('clear')
 let sendButton = document.getElementById('send')
 let savedInput= []
 for (i = 0;i<153;i++){
-    savedInput[i] = ""
+    savedInput[i] = " "
 }
 let grid = document.getElementById("grid")
 let textfields = [];
@@ -199,7 +199,8 @@ function clear(){
         count=0;
         savedInput = [];
         for (i=0;i<textfields.length;i++){
-            textfields[i].value = ""
+            textfields[i].value = " "
+            savedInput[i] = " "
         } 
     }
 }
@@ -417,7 +418,7 @@ function setTextfields(i){
         }
         
         
-        textfields[i].addEventListener('keypress', function(){
+        textfields[i].addEventListener('keypress', function(event){
             if (specialKeyPressed && textfields[i].value!==""){
                 savedInput[i] = textfields[i].value
                 
@@ -429,7 +430,8 @@ function setTextfields(i){
                 savedInput[i] = textfields[i].value
                 textfields[i].blur();
                 textfields[i+1].focus()
-                 
+                //event.preventDefault()
+                textfields[i+1].value = savedInput[i+1]
             }
             
             
