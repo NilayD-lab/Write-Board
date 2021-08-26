@@ -75,7 +75,6 @@ window.addEventListener('resize', ()=>{
     else{
         label.remove()
         playButton.style.fontSize = Math.floor((window.innerWidth*(128/1920)))+"px"
-        playButton.textContent = window.innerWidth
         playButton.style.setProperty('--topPOS', 1200/19.2 + "vw")
         playButton.style.setProperty('--leftPOS', 680/19.2 + "vw")
         if (!firstTime){
