@@ -341,7 +341,10 @@ function onTick(){
             }
             if (textfields[i].value == savedInput[i]){
                 cycleEnded.push(textfields[i]);
-                
+            }
+            if (!cycle.includes(savedInput[i]) && Math.floor(Math.random()*40) == 0){
+                cycleEnded.push(textfields[i])
+                textfields[i].value = savedInput[i]
             }
         }
         count++;
