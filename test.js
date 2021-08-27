@@ -38,7 +38,7 @@ for (i=0;i<thing.length;i++){
 }
 
 let cycleEnded = [];
-let cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#&?;. ".split("");
+let cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#&?;.".split("");
 let countDown;
 
 for (r=0;r<153;r++){
@@ -223,16 +223,19 @@ function downOperation(event){
 }
 
 function moveOperation(event){
-    //event.preventDefault()
+    try{
+      event.preventDefault()  
+    }
+    catch{}
     if (mousedown){
         touchendX = event.clientX;
         touchendY = event.clientY; 
         let direction = handleGesure() 
         if (direction!='down'){
-            if (Math.abs(event.clientX + offset[0]-initLeft) < 60){
+            if (Math.abs(event.clientX + offset[0]-initLeft) < 60 * window.innerWidth/500){
                 popup.style.left = (event.clientX + offset[0]) +"px"
             }
-            if (Math.abs(event.clientY + offset[1]-initTop) < 60){
+            if (Math.abs(event.clientY + offset[1]-initTop) < 60* window.innerWidth/500){
                 popup.style.top = (event.clientY + offset[1]) + "px"
             }  
         }
@@ -381,7 +384,7 @@ function play(){
         timer = setInterval(onTick, 50); 
     }
 }
-
+let delay = 0;
 function onTick(){
     if (cycleDone){
         for (i=0;i<textfields.length;i++){
@@ -391,6 +394,10 @@ function onTick(){
             else{
                 textfields[i].value = savedInput[i];
             }
+        }
+        if (delay!=40){
+            delay++;
+            return
         }
         clearInterval(timer);
         timer = null;
@@ -421,15 +428,16 @@ function onTick(){
         
     }
     else if (alphabetDone){
-    
         for (i=0;i<textfields.length;i++){
             if (!cycleEnded.includes(textfields[i])){
                 textfields[i].value = cycle[count];
-                
             }
             if (textfields[i].value == savedInput[i]){
                 cycleEnded.push(textfields[i]);
-                console.log("*")
+            }
+            if (!cycle.includes(savedInput[i]) && Math.floor(Math.random()*40) == 0){
+                cycleEnded.push(textfields[i])
+                textfields[i].value = savedInput[i]
             }
         }
         count++;
